@@ -8,10 +8,12 @@ import com.chat.repository.RoleRepository;
 import com.chat.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import javax.transaction.Transactional;
 
@@ -45,7 +47,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean register(UserRegisterBindingModel bindingModel) {
+    public boolean register(UserRegisterBindingModel bindingModel, BindingResult bindingResult) {
+        if (bindingResult.getAllErrors().size() > 0) {
+            return false;
+        }
+
         this.seedRoles();
 
         User user = this.modelMapper.map(bindingModel, User.class);
