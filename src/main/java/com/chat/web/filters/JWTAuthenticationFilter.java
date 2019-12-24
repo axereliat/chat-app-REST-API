@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static com.chat.common.constants.SecurityConstants.*;
@@ -62,6 +63,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         res.setCharacterEncoding("UTF-8");
 
         User user = ((User) auth.getPrincipal());
-        res.getWriter().write("Successfully logged in.");
+        res.getWriter().write(new ObjectMapper().writeValueAsString(Map.of("message", "Successfully logged in.")));
     }
 }
