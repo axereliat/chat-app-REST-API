@@ -15,4 +15,6 @@ public interface UserService extends UserDetailsService {
     boolean register(UserRegisterBindingModel bindingModel, BindingResult bindingResult);
 
     List<UserViewModel> findAll();
+
+    User findById(Integer id);
 }

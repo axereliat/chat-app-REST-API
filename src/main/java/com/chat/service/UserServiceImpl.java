@@ -81,6 +81,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findById(Integer id) {
+        return this.userRepository.findById(id).orElseThrow(() -> {
+            throw new NullPointerException("User with id " + id + " not found");
+        });
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         if (!this.userRepository.existsByUsername(s)) {
             throw new UsernameNotFoundException("Username " + s + " not found.");
