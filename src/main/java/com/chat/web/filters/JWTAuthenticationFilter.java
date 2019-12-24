@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
@@ -63,6 +64,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         res.setCharacterEncoding("UTF-8");
 
         User user = ((User) auth.getPrincipal());
-        res.getWriter().write(new ObjectMapper().writeValueAsString(Map.of("message", "Successfully logged in.")));
+        Map map = new HashMap();
+        map.put("token", token);
+        map.put("username", user.getUsername());
+        map.put("userId", user.getId());
+
+        res.getWriter().write(new ObjectMapper().writeValueAsString(map));
     }
 }

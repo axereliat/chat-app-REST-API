@@ -4,6 +4,7 @@ import com.chat.common.constants.Constants;
 import com.chat.domain.entities.Role;
 import com.chat.domain.entities.User;
 import com.chat.domain.models.binding.UserRegisterBindingModel;
+import com.chat.domain.models.view.UserViewModel;
 import com.chat.repository.RoleRepository;
 import com.chat.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -62,6 +65,14 @@ public class UserServiceImpl implements UserService {
         this.userRepository.saveAndFlush(user);
 
         return true;
+    }
+
+    @Override
+    public List<UserViewModel> findAll() {
+        return this.userRepository.findAll()
+                .stream()
+                .map(user -> this.modelMapper.map(user, UserViewModel.class))
+                .collect(Collectors.toList());
     }
 
     @Override
